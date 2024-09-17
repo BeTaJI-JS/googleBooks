@@ -5,7 +5,7 @@ import BookCard from 'components/BookCard';
 import { Link } from 'react-router-dom';
 
 const CardContainer = ({ books }) => {
-  if (!books || books.length === 0) return <div className={styles.wrapper}>Ничего не найдено</div>;
+  if (!books || books.length === 0) return <div className={styles.wrapper}>Нет данных для отображения</div>;
   console.log('books', books);
 
   return (

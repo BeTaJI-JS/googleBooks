@@ -36,7 +36,7 @@
   height: 500px;
   background-repeat: no-repeat;
   background-size: cover;
-  background-size: contain;
+  // background-size: contain; // kомает все к хуям
 
   .textContent {
     display: flex;
@@ -53,6 +53,42 @@
 
     .content {
       line-height: 28px;
+    }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .title {
+    padding: 20px 250px;
+  }
+
+  .pictureBlockTitle {
+    padding: 80px 250px;
+
+    .textContent {
+      .titleContent {
+        font-size: 36px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .title {
+    padding: 20px 200px;
+    h1 {
+      font-size: 24px;
+    }
+  }
+  .pictureBlockTitle {
+    padding: 63px 40px;
+    background-size: 100% 100%;
+
+    .textContent {
+      .titleContent {
+        font-size: 44px;
+        line-height: 56px;
+      }
     }
   }
 }

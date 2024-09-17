@@ -1,5 +1,8 @@
 :root {
-  width: 1920px;
+  display: flex;
+  flex-direction: column;
+  max-width: 1920px;
+  
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -12,6 +15,37 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+@media screen and (max-width: 1920px) {
+  :root {
+    max-width: 100%;
+    border: 2px solid red;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  :root {
+    max-width: 100%;
+    border: 2px solid blue;
+  }
+  
+}
+
+
+@media screen and (max-width: 768px) {
+  :root {
+    max-width: 100%;
+    border: 2px solid green;
+  }
+  
+}
+
+@media screen and (max-width: 480px) {
+  :root {
+    max-width: 100%;
+    border: 2px solid yellow;
+  }
+  
+}
 h3{
   margin: 0;
 }
