@@ -34,10 +34,13 @@ const DetailPage = () => {
                 alt={currentBook?.volumeInfo?.title}
               />
             </div>
-            <div>
-              <p>{currentBook?.volumeInfo?.authors?.join(', ')}</p>
-              <h3>{currentBook?.volumeInfo?.title}</h3>
-              <p>{currentBook?.volumeInfo?.description}</p>
+            <div className={styles.cardContent}>
+              <div>
+                <div>{currentBook?.volumeInfo?.authors?.join(', ')}</div>
+                <h3>{currentBook?.volumeInfo?.title}</h3>
+              </div>
+
+              <div>{currentBook?.volumeInfo?.description}</div>
             </div>
           </div>
         )}

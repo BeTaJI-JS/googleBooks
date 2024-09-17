@@ -27,4 +27,26 @@
       object-fit: fill;
     }
   }
+
+  .cardContent {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    line-height: 26px;
+
+    & > :first-child {
+      color: $gray2;
+      font-size: 12px;
+      & > h3 {
+        color: $gray;
+        font-size: 20px;
+      }
+    }
+
+    & > :last-child {
+      color: $darkBackground;
+      font-size: 14px;
+      line-height: 24px;
+    }
+  }
 }
