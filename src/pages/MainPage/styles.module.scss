@@ -56,3 +56,39 @@
     }
   }
 }
+
+.searchBarContainer {
+  box-sizing: border-box;
+  padding: 33px 28px;
+  background-color: $white;
+  position: relative;
+  // top: -30px;
+  transform: translateY(-30px);
+  border-radius: 4px;
+  box-shadow: $shadow2;
+  margin: 0 auto;
+  max-width: 1200px;
+  min-height: 248px;
+
+  .searchBar {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .filterOptionsContainer {
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    column-gap: 30px;
+
+    .filterContainer {
+      box-sizing: border-box;
+      width: 557px;
+      border: 1px solid black;
+      height: 54px;
+      padding: 7px 10px 7px 16px;
+    }
+  }
+}
