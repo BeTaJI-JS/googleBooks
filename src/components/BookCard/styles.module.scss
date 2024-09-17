@@ -1,0 +1,63 @@
+@import "styles/colors.module.scss";
+
+.card {
+  box-sizing: border-box;
+  width: 292.5px;
+  height: 480px;
+  border: 1px solid red;
+  // flex: 1 1 calc(25% - 20px);
+  border-radius: 4px;
+  background: $darkBackground;
+  color: $lightGreen;
+
+  & > :first-child {
+    width: 100%;
+    height: 250p;
+    * & img {
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .card {
+    flex: 1 1 calc(50% - 20px); // 1-2 карты
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    flex: 1 1 calc(100% - 20px); //одна карта
+  }
+}
+
+.contentInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 15px 18px 15px 18px;
+  line-height: 26px;
+
+  &:first-child {
+    font-size: 12px;
+  }
+
+  h3 {
+    margin: 0;
+    color: $white;
+    font-size: 20px;
+  }
+
+  .description {
+    // padding: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    color: $whiteGreen;
+    font-size: 14px;
+    line-height: 24px;
+  }
+}

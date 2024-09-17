@@ -1,0 +1,30 @@
+@import "styles/colors.module.scss";
+
+.CardInfoContainer {
+  box-sizing: border-box;
+  padding: 33px 28px;
+  background-color: $white;
+  position: relative;
+  transform: translateY(-30px);
+  border-radius: 4px;
+  box-shadow: $shadow2;
+  margin: 0 auto;
+  max-width: 1200px;
+  min-height: 248px;
+  max-height: 666px;
+}
+
+.CardInfo {
+  display: flex;
+  gap: 30px;
+
+  & > :first-child {
+    width: 557px;
+    height: 600px;
+
+    & img {
+      height: 100%;
+      object-fit: fill;
+    }
+  }
+}
