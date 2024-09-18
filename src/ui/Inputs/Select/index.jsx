@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './styles.module.scss';
 
 const Select = ({ name, options, className }) => {
   const defaultOption = [{ value: '', label: 'Выберите значение' }];
