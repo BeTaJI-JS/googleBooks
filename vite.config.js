@@ -17,11 +17,4 @@ export default defineConfig({
     },
     extensions: ['.scss', '.js', '.jsx', '.ts', '.tsx'],
   },
-  build: {
-    rollupOptions: {
-      input: {
-        main: resolve(__dirname, 'src/app.jsx'),
-      },
-    },
-  },
 });
