@@ -39,7 +39,6 @@ const DetailPage = () => {
                 <div>{currentBook?.volumeInfo?.authors?.join(', ')}</div>
                 <h3>{currentBook?.volumeInfo?.title}</h3>
               </div>
-
               <div>{currentBook?.volumeInfo?.description}</div>
             </div>
           </div>
