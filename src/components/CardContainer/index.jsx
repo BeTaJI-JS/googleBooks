@@ -18,7 +18,7 @@ const CardContainer = ({ books }) => {
           </Link>
         ))}
       </div>
-      <div>Показать еще </div>
+      <button>Показать еще </button>
     </div>
   );
 };
