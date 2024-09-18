@@ -1,6 +1,11 @@
+@import "styles/colors.module.scss";
+
 .searchInput {
   box-sizing: border-box;
   padding: 7px 10px 7px 16px;
   height: 54px;
-  border: 1px solid red;
+  background: $white2;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
 }

@@ -14,6 +14,7 @@ export default defineConfig({
       pages: resolve(__dirname, './src/pages/'),
       store: resolve(__dirname, './src/store/'),
       styles: resolve(__dirname, './src/styles/'),
+      ui: resolve(__dirname, './src/ui/'),
     },
     extensions: ['.scss', '.js', '.jsx', '.ts', '.tsx'],
   },

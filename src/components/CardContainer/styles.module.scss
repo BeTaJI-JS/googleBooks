@@ -24,7 +24,7 @@
     width: 236px;
     padding: 13px 40px 13px 40px;
     border-radius: 4px;
-    background-color: #233d2c;
+    background-color: $green2;
     color: $white;
     display: flex;
     align-items: center;
@@ -59,7 +59,7 @@
 }
 @media screen and (max-width: 768px) {
   .wrapper {
-    padding: 50px 200px;
+    padding: 50px 80px;
   }
 }
 

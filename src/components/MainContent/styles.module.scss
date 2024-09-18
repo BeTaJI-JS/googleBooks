@@ -36,7 +36,6 @@
   height: 500px;
   background-repeat: no-repeat;
   background-size: cover;
-  // background-size: contain; // kомает все к хуям
 
   .textContent {
     display: flex;
@@ -59,7 +58,8 @@
 
 @media screen and (max-width: 1024px) {
   .title {
-    padding: 20px 250px;
+    // padding: 20px 250px; //для теста
+    padding: 20px 120px;
   }
 
   .pictureBlockTitle {

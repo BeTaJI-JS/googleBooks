@@ -27,9 +27,10 @@
 
     .filterContainer {
       box-sizing: border-box;
+      display: flex;
+      justify-content: space-between;
       width: 557px;
-      border: 1px solid black;
-      height: 54px;
+      min-height: 54px;
       padding: 7px 10px 7px 16px;
     }
   }
@@ -54,5 +55,10 @@
     max-width: 480px;
     min-height: auto;
     max-height: none;
+  }
+  .filterContainer {
+    flex-direction: column;
+    height: 92px;
+    gap: 10px;
   }
 }
