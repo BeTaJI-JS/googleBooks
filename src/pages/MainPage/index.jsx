@@ -9,19 +9,14 @@ import styles from './styles.module.scss';
 
 const apiKey = import.meta.env.VITE_API_KEY;
 
-console.log('apiKey--->>>>>', apiKey);
 const MainPage = () => {
   const [books, setBooks] = useState([]);
   const [searchHistory, setSearchHistory] = useState([]);
   const [startIndex, setStartIndex] = useState(0);
   // const [languageOptions, setLanguageOptions] = useState([]); // для фильтра придумать с использованием параметра в запросе langRestrict
-  console.log('books', books);
-  console.log('searchHistory', searchHistory);
 
   const fetchBooks = useCallback(
     async (query) => {
-      console.log('asdsa', query);
-
       if (!query) return;
 
       const response = await axios.get(

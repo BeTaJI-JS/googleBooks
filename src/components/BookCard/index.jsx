@@ -7,8 +7,6 @@ import styles from './styles.module.scss';
 const BookCard = ({ book }) => {
   const { title, authors, imageLinks, description } = book.volumeInfo;
 
-  console.log('BookCard book', book);
-
   return (
     <div className={styles.card}>
       <div style={{ width: '100%', height: '250px' }}>

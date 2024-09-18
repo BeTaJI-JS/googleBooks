@@ -8,7 +8,6 @@ import EmptyImage from 'assets/empty.svg';
 import styles from './styles.module.scss';
 const DetailPage = () => {
   const [currentBook, setCurrentBook] = useState(null);
-  console.log('currentBook', currentBook);
 
   const { id } = useParams();
 

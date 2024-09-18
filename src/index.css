@@ -18,14 +18,12 @@
 @media screen and (max-width: 1920px) {
   :root {
     max-width: 100%;
-    border: 2px solid red;
   }
 }
 
 @media screen and (max-width: 1024px) {
   :root {
     max-width: 100%;
-    border: 2px solid blue;
   }
   
 }
@@ -34,7 +32,6 @@
 @media screen and (max-width: 768px) {
   :root {
     max-width: 100%;
-    border: 2px solid green;
   }
   
 }
@@ -42,7 +39,6 @@
 @media screen and (max-width: 480px) {
   :root {
     max-width: 100%;
-    border: 2px solid yellow;
   }
   
 }

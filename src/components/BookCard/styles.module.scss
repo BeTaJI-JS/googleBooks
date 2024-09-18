@@ -2,10 +2,10 @@
 
 .card {
   box-sizing: border-box;
-  width: 292.5px;
+  max-width: 292.5px;
   height: 480px;
-  border: 1px solid red;
-  // flex: 1 1 calc(25% - 20px);
+
+  flex: 1 1 calc(25% - 20px);
   border-radius: 4px;
   background: $darkBackground;
   color: $lightGreen;
@@ -50,11 +50,9 @@
   }
 
   .description {
-    // padding: 10px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-
     color: $whiteGreen;
     font-size: 14px;
     line-height: 24px;
