@@ -19,7 +19,9 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      external: ['/src/app.jsx'],
+      input: {
+        main: resolve(__dirname, 'src/app.jsx'),
+      },
     },
   },
 });
