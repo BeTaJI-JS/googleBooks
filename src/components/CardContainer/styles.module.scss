@@ -46,11 +46,11 @@
   gap: 10px;
 }
 
-@media screen and (min-width: 1200px) {
-  .wrapper {
-    padding: 50px 250px;
-  }
-}
+// @media screen and (min-width: 1200px) {
+//   .wrapper {
+//     padding: 50px 250px; //! странно сейчас это не нужно. вдимо для деплоя добавлял ибо там криво стили пошли( проверить прежде чем удалить)
+//   }
+// }
 
 @media screen and (max-width: 1024px) {
   .wrapper {
