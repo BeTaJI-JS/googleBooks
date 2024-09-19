@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 
 import CardContainer from 'components/CardContainer';
@@ -8,6 +8,7 @@ import Select from 'ui/Inputs/Select';
 import { filtersOptions } from 'helpers';
 
 import styles from './styles.module.scss';
+import useDebouncedCallback from '../../hooks';
 
 const apiKey = import.meta.env.VITE_API_KEY;
 
@@ -16,6 +17,8 @@ const MainPage = () => {
   const [searchHistory, setSearchHistory] = useState([]);
   const [startIndex, setStartIndex] = useState(0);
   // const [languageOptions, setLanguageOptions] = useState([]); // для фильтра придумать с использованием параметра в запросе langRestrict
+
+  const filterOptions = filtersOptions(books);
 
   const fetchBooks = useCallback(
     async (query) => {
@@ -34,14 +37,22 @@ const MainPage = () => {
     [searchHistory],
   );
 
-  const filterOptions = filtersOptions(books);
+  const debouncedFetchBooks = useDebouncedCallback(fetchBooks, 700);
+
+  const handleSearch = useCallback(
+    (value) => {
+      setSearchHistory(value);
+      debouncedFetchBooks(value);
+    },
+    [debouncedFetchBooks],
+  );
 
   return (
     <>
       <MainContent />
       <div className={styles.searchBarContainer}>
         <div className={styles.searchBar}>
-          <SearchBar onSearch={fetchBooks} history={searchHistory} />
+          <SearchBar onSearch={handleSearch} />
           <div className={styles.filterOptionsContainer}>
             <Select name='Автор' className={styles.filterContainer} options={filterOptions.authors} />
             <Select name='Название' className={styles.filterContainer} options={filterOptions.titles} />

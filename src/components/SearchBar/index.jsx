@@ -1,28 +1,18 @@
-import { useCallback, useState } from 'react';
-
-import { debounce } from 'lodash';
+import { useEffect, useState } from 'react';
 
 import styles from './styles.module.scss';
 
-const SearchBar = ({ onSearch, history }) => {
+const SearchBar = ({ onSearch }) => {
   const [query, setQuery] = useState('');
-
-  const debouncedSearch = useCallback(
-    debounce((value) => {
-      onSearch(value);
-
-      if (value) {
-        history.push(value);
-      }
-    }, 300),
-    [onSearch, history],
-  );
 
   const handleInputChange = (event) => {
     const value = event.target.value;
     setQuery(value);
-    debouncedSearch(value);
   };
+
+  useEffect(() => {
+    onSearch(query);
+  }, [query]);
 
   return (
     <input
