@@ -15,6 +15,7 @@ export default defineConfig({
       store: resolve(__dirname, './src/store/'),
       styles: resolve(__dirname, './src/styles/'),
       ui: resolve(__dirname, './src/ui/'),
+      helpers: resolve(__dirname, './src/helpers/'),
     },
     extensions: ['.scss', '.js', '.jsx', '.ts', '.tsx'],
   },
