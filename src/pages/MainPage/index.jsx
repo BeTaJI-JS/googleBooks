@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 
-import { useGetBooksQuery } from 'store/requests';
+import { useGetBooksQuery, useGetBooksByFiltersQuery } from 'store/requests';
 
 import CardContainer from 'components/CardContainer';
 import MainContent from 'components/MainContent';
@@ -18,8 +18,20 @@ const MainPage = () => {
   const [startIndex, setStartIndex] = useState(0);
   const [author, setAuthor] = useState('');
   const [bookTitle, setBookTitle] = useState('');
-  const [category, setCategory] = useState('');
+  const [inpublisher, setInpublisher] = useState('');
   const [lang, setLang] = useState('');
+
+  const clearFilters = useCallback(() => {
+    setAuthor('');
+    setBookTitle('');
+    setInpublisher('');
+    setLang('');
+  }, []);
+
+  const isFiltersActive = useMemo(
+    () => !!author || !!bookTitle || !!inpublisher || !!lang,
+    [author, bookTitle, inpublisher, lang],
+  );
 
   const {
     data: booksData,
@@ -27,11 +39,22 @@ const MainPage = () => {
     isLoading,
   } = useGetBooksQuery({ query: searchQuery, page: startIndex }, { skip: !searchQuery });
 
-  const debouncedFetchBooks = useDebouncedCallback((value) => {
-    console.log('fetchBooks', value);
+  const { data: booksByFilters } = useGetBooksByFiltersQuery(
+    {
+      query: searchQuery,
+      langRestrict: lang,
+      author,
+      title: bookTitle,
+      inpublisher,
+      page: startIndex,
+    },
+    { skip: !isFiltersActive },
+  );
 
+  const debouncedFetchBooks = useDebouncedCallback((value) => {
     setSearchQuery(value);
     setStartIndex(0); // Сброс индекса при новом поиске
+    clearFilters();
   }, 700);
 
   const filterOptions = filtersOptions(booksData?.items || []);
@@ -40,22 +63,16 @@ const MainPage = () => {
     (value) => {
       debouncedFetchBooks(value);
     },
-    [debouncedFetchBooks],
+    [debouncedFetchBooks, setSearchQuery, setStartIndex],
   );
-
-  const isFiltersActive = useMemo(
-    () => !!author || !!bookTitle || !!category || !!lang,
-    [author, bookTitle, category, lang],
-  );
-  console.log('isFiltersActive', isFiltersActive);
 
   const preparedData = useMemo(() => {
     if (isFiltersActive) {
-      return 'c запроса на фильтер';
+      return booksByFilters;
     } else {
       return booksData;
     }
-  }, [isFiltersActive, booksData]);
+  }, [isFiltersActive, booksData, booksByFilters]);
 
   return (
     <>
@@ -78,10 +95,10 @@ const MainPage = () => {
                 onChange={setBookTitle}
               />
               <Select
-                name='Категория'
+                name='Издательство'
                 className={styles.filterContainer}
                 options={filterOptions.categories}
-                onChange={setCategory}
+                onChange={setInpublisher}
               />
               <Select
                 name='Язык'

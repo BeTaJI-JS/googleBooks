@@ -14,7 +14,6 @@ const itemHeight = 200;
 const CardContainer = ({ books }) => {
   if (!books?.items || books.items.length === 0)
     return <div className={cn(styles.wrapper, styles.centerText)}>Нет данных для отображения</div>;
-  console.log('books', books);
 
   const onClickBtn = useCallback(() => {
     console.log('click');

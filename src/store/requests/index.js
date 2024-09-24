@@ -10,17 +10,35 @@ export const requestsApi = createApi({
   endpoints: (builder) => ({
     // Запрос для получения списка книг
     getBooks: builder.query({
-      query: ({ query, page }) => `volumes?q=${query}&maxResults=40&startIndex=${page}&key=${apiKey}`,
+      query: ({ query, page }) => ({
+        url: `volumes?q=${query}&maxResults=40&startIndex=${page}&key=${apiKey}`,
+      }),
     }),
     // Запрос для получения детальной информации о книге по id
     getBook: builder.query({
-      query: (id) => {
-        console.log('id', id);
+      query: (id) => ({
+        url: `volumes/${id}?key=${apiKey}`,
+      }),
+    }),
+    // Запрос для получения списка книг по фильтрам
+    getBooksByFilters: builder.query({
+      query: ({ query, langRestrict, author, title, inpublisher, page }) => {
+        const queryParts = [];
+        queryParts.push(`q=${query}`);
+        if (page) queryParts.push(`startIndex=${page}`);
+        if (author) queryParts.push(`inauthor:${author}`);
+        if (title) queryParts.push(`intitle:${title}`);
+        if (inpublisher) queryParts.push(`inpublisher:${inpublisher}`);
+        if (langRestrict) queryParts.push(`langRestrict:${langRestrict}`);
 
-        return `volumes/${id}?key=${apiKey}`;
+        const queryParams = queryParts.join('+');
+
+        return {
+          url: `volumes?${queryParams}&key=${apiKey}`,
+        };
       },
     }),
   }),
 });
 
-export const { useGetBooksQuery, useGetBookQuery } = requestsApi;
+export const { useGetBooksQuery, useGetBookQuery, useGetBooksByFiltersQuery } = requestsApi;

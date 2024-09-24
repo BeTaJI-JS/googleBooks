@@ -1,7 +1,7 @@
 export const filtersOptions = (data) =>
   data.reduce(
     (acc, book) => {
-      const { authors, title, categories, language } = book.volumeInfo;
+      const { authors, title, publisher, language } = book.volumeInfo;
 
       //  уникальных авторов
       if (authors) {
@@ -18,13 +18,16 @@ export const filtersOptions = (data) =>
         acc.titles.push({ label: title, value: title });
       }
 
-      //  уникальные категории
-      if (categories) {
-        categories.forEach((category) => {
-          if (!acc.categories.some((cat) => cat.value === category)) {
-            acc.categories.push({ label: category, value: category });
-          }
-        });
+      //  уникальные издатели
+      if (publisher) {
+        Array.isArray(publisher)
+          ? publisher.forEach((pub) => {
+              if (!acc.categories.some((cat) => cat.value === pub)) {
+                acc.categories.push({ label: publisher, value: publisher });
+              }
+            })
+          : !acc.categories.some((cat) => cat.value === publisher) &&
+            acc.categories.push({ label: publisher, value: publisher });
       }
 
       //  уникальный язык

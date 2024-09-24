@@ -8,7 +8,6 @@ import styles from './styles.module.scss';
 
 const BookCard = ({ book }) => {
   // const { title, authors, imageLinks, description } = book.volumeInfo;
-  console.log('book BookCard', book);
 
   return (
     <Link to={`/book/${book.id}`} key={book.id}>
