@@ -58,7 +58,6 @@
 
 @media screen and (max-width: 1024px) {
   .title {
-    // padding: 20px 250px; //для теста
     padding: 20px 120px;
   }
 
@@ -75,8 +74,7 @@
 
 @media screen and (max-width: 768px) {
   .title {
-    // padding: 20px 200px;
-    padding: 20px 120px; // тест для деплоя
+    padding: 20px 100px;
 
     h1 {
       font-size: 24px;

@@ -46,22 +46,25 @@ const MainPage = () => {
     },
     [debouncedFetchBooks],
   );
+  console.log('books MAINPAGE', books);
 
   return (
     <>
       <MainContent />
-      <div className={styles.searchBarContainer}>
-        <div className={styles.searchBar}>
-          <SearchBar onSearch={handleSearch} />
-          <div className={styles.filterOptionsContainer}>
-            <Select name='Автор' className={styles.filterContainer} options={filterOptions.authors} />
-            <Select name='Название' className={styles.filterContainer} options={filterOptions.titles} />
-            <Select name='Категория' className={styles.filterContainer} options={filterOptions.categories} />
-            <Select name='Язык' className={styles.filterContainer} options={filterOptions.languages} />
+      <div>
+        <div className={styles.searchBarContainer}>
+          <div className={styles.searchBar}>
+            <SearchBar onSearch={handleSearch} />
+            <div className={styles.filterOptionsContainer}>
+              <Select name='Автор' className={styles.filterContainer} options={filterOptions.authors} />
+              <Select name='Название' className={styles.filterContainer} options={filterOptions.titles} />
+              <Select name='Категория' className={styles.filterContainer} options={filterOptions.categories} />
+              <Select name='Язык' className={styles.filterContainer} options={filterOptions.languages} />
+            </div>
           </div>
         </div>
+        <CardContainer books={books} />
       </div>
-      <CardContainer books={books} />
     </>
   );
 };

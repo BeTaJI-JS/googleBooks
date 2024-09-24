@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Link } from 'react-router-dom';
+
 import EmptyImage from 'assets/empty.svg';
 
 import styles from './styles.module.scss';
@@ -8,16 +10,18 @@ const BookCard = ({ book }) => {
   const { title, authors, imageLinks, description } = book.volumeInfo;
 
   return (
-    <div className={styles.card}>
-      <div style={{ width: '100%', height: '250px' }}>
-        <img src={imageLinks?.thumbnail || EmptyImage} alt={title} />
+    <Link to={`/book/${book.id}`} key={book.id}>
+      <div className={styles.card}>
+        <div>
+          <img src={imageLinks?.thumbnail || EmptyImage} alt={title} />
+        </div>
+        <div className={styles.contentInfo}>
+          <div>{authors?.join(', ') || 'Автор неизвестен'}</div>
+          <h3>{title}</h3>
+          <div className={styles.description}>{description}</div>
+        </div>
       </div>
-      <div className={styles.contentInfo}>
-        <div>{authors?.join(', ') || 'Автор неизвестен'}</div>
-        <h3>{title}</h3>
-        <div className={styles.description}>{description}</div>
-      </div>
-    </div>
+    </Link>
   );
 };
 
