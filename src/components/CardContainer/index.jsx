@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import cn from 'classnames';
 
@@ -8,31 +8,33 @@ import VirtualList from 'rc-virtual-list';
 
 import styles from './styles.module.scss';
 
-const height = 1000;
-const itemHeight = 480;
+const height = 980;
+const itemHeight = 200;
 
 const CardContainer = ({ books }) => {
-  if (!books || books.length === 0)
+  if (!books?.items || books.items.length === 0)
     return <div className={cn(styles.wrapper, styles.centerText)}>Нет данных для отображения</div>;
-  console.count('books', books);
+  console.log('books', books);
+
+  const onClickBtn = useCallback(() => {
+    console.log('click');
+  }, []);
 
   return (
     <div className={styles.wrapper}>
-      <div>Найдено: {books.length} результатов</div>
-      <div className={styles.bookCardContainer}>
+      <div>Найдено: {books.totalItems} результатов</div>
+      {books.items.length > 0 && (
         <VirtualList
-          data={books}
+          className={styles.virtualList}
+          data={books.items}
           height={height}
           itemHeight={itemHeight}
           itemKey={(item) => item.id}
-          className={styles.virtualList}
         >
-          {(book) => {
-            return <BookCard book={book} />;
-          }}
+          {(book) => <BookCard book={book} />}
         </VirtualList>
-      </div>
-      <button>Показать еще</button>
+      )}
+      <button onClick={onClickBtn}>Показать еще</button>
     </div>
   );
 };

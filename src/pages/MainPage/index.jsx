@@ -1,52 +1,44 @@
-import { useCallback, useEffect, useState } from 'react';
-import axios from 'axios';
+import { useCallback, useState } from 'react';
+
+import { useGetBooksQuery } from 'store/requests';
 
 import CardContainer from 'components/CardContainer';
 import MainContent from 'components/MainContent';
 import SearchBar from 'components/SearchBar';
+
+import useDebouncedCallback from 'hooks';
+
 import Select from 'ui/Inputs/Select';
+
 import { filtersOptions } from 'helpers';
 
 import styles from './styles.module.scss';
-import useDebouncedCallback from '../../hooks';
-
-const apiKey = import.meta.env.VITE_API_KEY;
 
 const MainPage = () => {
-  const [books, setBooks] = useState([]);
-  const [searchHistory, setSearchHistory] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('Java Script'); // Начальный запрос
   const [startIndex, setStartIndex] = useState(0);
-  // const [languageOptions, setLanguageOptions] = useState([]); // для фильтра придумать с использованием параметра в запросе langRestrict
 
-  const filterOptions = filtersOptions(books);
+  const {
+    data: booksData,
+    error,
+    isLoading,
+  } = useGetBooksQuery({ query: searchQuery, page: startIndex }, { skip: !searchQuery });
 
-  const fetchBooks = useCallback(
-    async (query) => {
-      if (!query) return;
+  const debouncedFetchBooks = useDebouncedCallback((value) => {
+    console.log('fetchBooks', value);
 
-      const response = await axios.get(
-        `https://www.googleapis.com/books/v1/volumes?q=${query}&key=${apiKey}&startIndex=${startIndex}`,
-      );
-      setBooks(response.data.items || []);
+    setSearchQuery(value);
+    setStartIndex(0); // Сброс индекса при новом поиске
+  }, 700);
 
-      // Сохранение истории поиска( но по каждой будкве)
-      if (!searchHistory.includes(query)) {
-        setSearchHistory((prev) => [...prev, query]);
-      }
-    },
-    [searchHistory],
-  );
-
-  const debouncedFetchBooks = useDebouncedCallback(fetchBooks, 700);
+  const filterOptions = filtersOptions(booksData?.items || []);
 
   const handleSearch = useCallback(
     (value) => {
-      setSearchHistory(value);
       debouncedFetchBooks(value);
     },
     [debouncedFetchBooks],
   );
-  console.log('books MAINPAGE', books);
 
   return (
     <>
@@ -63,7 +55,9 @@ const MainPage = () => {
             </div>
           </div>
         </div>
-        <CardContainer books={books} />
+        {isLoading && <div>Loading...</div>}
+        {error && <div>Error occurred: {error.message}</div>}
+        <CardContainer books={booksData} />
       </div>
     </>
   );

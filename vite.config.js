@@ -16,6 +16,7 @@ export default defineConfig({
       styles: resolve(__dirname, './src/styles/'),
       ui: resolve(__dirname, './src/ui/'),
       helpers: resolve(__dirname, './src/helpers/'),
+      hooks: resolve(__dirname, './src/hooks/'),
     },
     extensions: ['.scss', '.js', '.jsx', '.ts', '.tsx'],
   },
