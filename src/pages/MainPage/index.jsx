@@ -34,12 +34,7 @@ const MainPage = () => {
     [author, bookTitle, inpublisher, lang],
   );
 
-  const {
-    data: booksData,
-    error,
-    isLoading,
-  } = useGetBooksQuery({ query: searchQuery, page: startIndex }, { skip: !searchQuery });
-  console.log('booksData', booksData);
+  const { data: booksData, error } = useGetBooksQuery({ query: searchQuery, page: startIndex }, { skip: !searchQuery });
 
   const { data: booksByFilters } = useGetBooksByFiltersQuery(
     {
@@ -119,7 +114,6 @@ const MainPage = () => {
             </div>
           </div>
         </div>
-        {isLoading && <div>Loading...</div>}
         {error && <div>Error occurred: {error.message}</div>}
         <CardContainer books={preparedData} setPage={setStartIndex} />
       </div>
