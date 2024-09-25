@@ -13,12 +13,20 @@ export const requestsApi = createApi({
       query: ({ query, page }) => ({
         url: `volumes?q=${query}&maxResults=40&startIndex=${page}&key=${apiKey}`,
       }),
+      // Настройки для автоматического повторного запроса
+      refetchOnFocus: true,
+      refetchOnReconnect: true,
+      // Настройка кэширования
+      keepUnusedDataFor: 30, // Данные будут храниться в кэше 30 секунд
     }),
     // Запрос для получения детальной информации о книге по id
     getBook: builder.query({
       query: (id) => ({
         url: `volumes/${id}?key=${apiKey}`,
       }),
+      refetchOnFocus: true,
+      refetchOnReconnect: true,
+      keepUnusedDataFor: 30,
     }),
     // Запрос для получения списка книг по фильтрам
     getBooksByFilters: builder.query({
