@@ -14,12 +14,13 @@ import { filtersOptions } from 'helpers';
 import styles from './styles.module.scss';
 
 const MainPage = () => {
-  const [searchQuery, setSearchQuery] = useState('Java Script'); // Начальный запрос
+  const [searchQuery, setSearchQuery] = useState('Java Script');
   const [startIndex, setStartIndex] = useState(0);
   const [author, setAuthor] = useState('');
   const [bookTitle, setBookTitle] = useState('');
   const [inpublisher, setInpublisher] = useState('');
   const [lang, setLang] = useState('');
+  // const [allBooks, setAllBooks] = useState({}); //! TODO доделать конкатинацию данных. все поломалось при первом запросе.
 
   const clearFilters = useCallback(() => {
     setAuthor('');
@@ -38,6 +39,7 @@ const MainPage = () => {
     error,
     isLoading,
   } = useGetBooksQuery({ query: searchQuery, page: startIndex }, { skip: !searchQuery });
+  console.log('booksData', booksData);
 
   const { data: booksByFilters } = useGetBooksByFiltersQuery(
     {
@@ -53,8 +55,9 @@ const MainPage = () => {
 
   const debouncedFetchBooks = useDebouncedCallback((value) => {
     setSearchQuery(value);
-    setStartIndex(0); // Сброс индекса при новом поиске
+    setStartIndex(0);
     clearFilters();
+    // setAllBooks({});
   }, 700);
 
   const filterOptions = filtersOptions(booksData?.items || []);
@@ -73,6 +76,13 @@ const MainPage = () => {
       return booksData;
     }
   }, [isFiltersActive, booksData, booksByFilters]);
+
+  //! TODO доделать конканинацию данных при запросе. поломал логику- откатился назад
+  // useEffect(() => {
+  //   if (preparedData && preparedData.items) {
+  //     setAllBooks({ ...preparedData, items: [...preparedData.items] });
+  //   }
+  // }, [preparedData]);
 
   return (
     <>
@@ -111,7 +121,7 @@ const MainPage = () => {
         </div>
         {isLoading && <div>Loading...</div>}
         {error && <div>Error occurred: {error.message}</div>}
-        <CardContainer books={preparedData} />
+        <CardContainer books={preparedData} setPage={setStartIndex} />
       </div>
     </>
   );

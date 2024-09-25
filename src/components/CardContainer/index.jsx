@@ -11,13 +11,13 @@ import styles from './styles.module.scss';
 const height = 980;
 const itemHeight = 200;
 
-const CardContainer = ({ books }) => {
+const CardContainer = ({ books, setPage }) => {
   if (!books?.items || books.items.length === 0)
     return <div className={cn(styles.wrapper, styles.centerText)}>Нет данных для отображения</div>;
 
-  const onClickBtn = useCallback(() => {
-    console.log('click');
-  }, []);
+  const handleClickBtn = useCallback(() => {
+    setPage((prev) => prev + 1);
+  }, [setPage]);
 
   return (
     <div className={styles.wrapper}>
@@ -33,7 +33,7 @@ const CardContainer = ({ books }) => {
           {(book) => <BookCard book={book} />}
         </VirtualList>
       )}
-      <button onClick={onClickBtn}>Показать еще</button>
+      <button onClick={handleClickBtn}>Показать еще</button>
     </div>
   );
 };
