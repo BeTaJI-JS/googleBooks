@@ -1,6 +1,6 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { useGetBooksQuery, useGetBooksByFiltersQuery } from 'store/requests';
+import { useGetBooksByFiltersQuery } from 'store/requests';
 
 import CardContainer from 'components/CardContainer';
 import MainContent from 'components/MainContent';
@@ -19,24 +19,18 @@ const MainPage = () => {
   const [author, setAuthor] = useState('');
   const [bookTitle, setBookTitle] = useState('');
   const [inpublisher, setInpublisher] = useState('');
-  const [lang, setLang] = useState('');
-  // const [allBooks, setAllBooks] = useState({}); //! TODO доделать конкатинацию данных. все поломалось при первом запросе.
+  const [lang, setLang] = useState(''); //! выбрать другой фильтр - языка нет в фильтрации(работает не корректно)
+  const [allBooks, setAllBooks] = useState([]);
 
   const clearFilters = useCallback(() => {
     setAuthor('');
     setBookTitle('');
     setInpublisher('');
     setLang('');
+    setAllBooks([]);
   }, []);
 
-  const isFiltersActive = useMemo(
-    () => !!author || !!bookTitle || !!inpublisher || !!lang,
-    [author, bookTitle, inpublisher, lang],
-  );
-
-  const { data: booksData, error } = useGetBooksQuery({ query: searchQuery, page: startIndex }, { skip: !searchQuery });
-
-  const { data: booksByFilters } = useGetBooksByFiltersQuery(
+  const { data: { items = [], totalItems = 0 } = {} } = useGetBooksByFiltersQuery(
     {
       query: searchQuery,
       langRestrict: lang,
@@ -45,17 +39,19 @@ const MainPage = () => {
       inpublisher,
       page: startIndex,
     },
-    { skip: !isFiltersActive },
+    {
+      skip: !searchQuery,
+    },
   );
 
   const debouncedFetchBooks = useDebouncedCallback((value) => {
     setSearchQuery(value);
     setStartIndex(0);
     clearFilters();
-    // setAllBooks({});
+    setAllBooks([]);
   }, 700);
 
-  const filterOptions = filtersOptions(booksData?.items || []);
+  const filterOptions = filtersOptions(items || []);
 
   const handleSearch = useCallback(
     (value) => {
@@ -64,20 +60,15 @@ const MainPage = () => {
     [debouncedFetchBooks, setSearchQuery, setStartIndex],
   );
 
-  const preparedData = useMemo(() => {
-    if (isFiltersActive) {
-      return booksByFilters;
-    } else {
-      return booksData;
-    }
-  }, [isFiltersActive, booksData, booksByFilters]);
+  useEffect(() => {
+    if (!items.length) return;
 
-  //! TODO доделать конканинацию данных при запросе. поломал логику- откатился назад
-  // useEffect(() => {
-  //   if (preparedData && preparedData.items) {
-  //     setAllBooks({ ...preparedData, items: [...preparedData.items] });
-  //   }
-  // }, [preparedData]);
+    if (startIndex === 0) {
+      setAllBooks(items);
+    } else {
+      setAllBooks((prev) => [...prev, ...items]);
+    }
+  }, [items, startIndex]);
 
   return (
     <>
@@ -114,8 +105,7 @@ const MainPage = () => {
             </div>
           </div>
         </div>
-        {error && <div>Error occurred: {error.message}</div>}
-        <CardContainer books={preparedData} setPage={setStartIndex} />
+        <CardContainer books={allBooks} setPage={setStartIndex} totalItems={totalItems} />
       </div>
     </>
   );
