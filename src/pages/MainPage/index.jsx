@@ -51,7 +51,7 @@ const MainPage = () => {
     setAllBooks([]);
   }, 700);
 
-  const filterOptions = filtersOptions(items || []);
+  const filterOptions = useMemo(() => filtersOptions(items || []), [items]);
 
   const handleSearch = useCallback(
     (value) => {

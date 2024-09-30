@@ -32,21 +32,25 @@ export const requestsApi = createApi({
           langRestrict ? `angRestrict:${langRestrict}` : null,
         ].filter(Boolean);
 
-        //!показать вариант диме?
-        // const queryParts = [];
-
-        // queryParts.push(`q=${query}`);
-        // if (page) queryParts.push(`startIndex=${page}`);
-        // if (author) queryParts.push(`inauthor:${author}`);
-        // if (title) queryParts.push(`intitle:${title}`);
-        // if (inpublisher) queryParts.push(`inpublisher:${inpublisher}`);
-        // if (langRestrict) queryParts.push(`langRestrict:${langRestrict}`);
-
         const queryParams = queryParts.join('+');
 
         return {
           url: `volumes?${queryParams}&maxResults=40&key=${apiKey}`,
         };
+        // const params = new URLSearchParams({
+        //   q: query,
+        //   maxResults: 40,
+        //   key: apiKey,
+        //   ...(page && { startIndex: page }), // добавляем startIndex только если page задан
+        //   ...(author && { inauthor: author }), // добавляем inauthor только если author задан
+        //   ...(title && { intitle: title }), // добавляем intitle только если title задан
+        //   ...(inpublisher && { inpublisher: inpublisher }), // добавляем inpublisher только если inpublisher задан
+        //   ...(langRestrict && { langRestrict }), // добавляем langRestrict только если langRestrict задан
+        // });
+
+        // return {
+        //   url: `volumes?${params.toString()}`,
+        // };
       },
     }),
   }),
