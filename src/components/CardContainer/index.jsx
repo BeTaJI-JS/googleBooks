@@ -1,5 +1,3 @@
-import React, { useCallback } from 'react';
-
 import cn from 'classnames';
 
 import BookCard from 'components/BookCard';
@@ -23,18 +21,13 @@ const CardContainer = ({ books, setPage, totalItems }) => {
     <div className={styles.wrapper}>
       <div>Найдено: {totalItems} результатов</div>
       {books.length > 0 && (
-        <VirtualList
-          className={styles.virtualList}
-          data={books}
-          height={height}
-          itemHeight={itemHeight}
-          // itemKey={(item) => item.id}
-          itemKey='etag'
-        >
+        <VirtualList className={styles.virtualList} data={books} height={height} itemHeight={itemHeight} itemKey='etag'>
           {(book) => <BookCard book={book} />}
         </VirtualList>
       )}
-      <button onClick={handleClickBtn}>Показать еще</button>
+      <button onClick={handleClickBtn} disabled={totalItems < 40}>
+        Показать еще
+      </button>
     </div>
   );
 };

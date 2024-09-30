@@ -1,21 +1,33 @@
-import { useEffect, useState } from 'react';
+import { useState, useCallback } from 'react';
+
+import useDebouncedCallback from 'hooks';
 
 import styles from './styles.module.scss';
 
 const SearchBar = ({ onSearch }) => {
-  // const [query, setQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState('Java Script');
 
-  const handleInputChange = (event) => {
-    const value = event.target.value;
-    onSearch(value);
-  };
+  const debouncedSearch = useDebouncedCallback((query) => {
+    onSearch(query);
+  }, 500);
 
-  // useEffect(() => {
-  //   onSearch(query);
-  // }, [query]);
+  const handleInputChange = useCallback(
+    (e) => {
+      const value = e.target.value;
+      setSearchQuery(value);
+      debouncedSearch(value);
+    },
+    [debouncedSearch],
+  );
 
   return (
-    <input type='text' placeholder='Поиск...' value={''} onChange={handleInputChange} className={styles.searchInput} />
+    <input
+      className={styles.searchInput}
+      type='text'
+      value={searchQuery}
+      onChange={handleInputChange}
+      placeholder='Поиск...'
+    />
   );
 };
 
