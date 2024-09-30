@@ -11,29 +11,17 @@ import useDebouncedCallback from 'hooks';
 
 import { filtersOptions } from 'helpers';
 
+import { useFilters } from 'context';
+
 import styles from './styles.module.scss';
-import { useFilters } from '../../context';
 
 const MainPage = () => {
   const { filters, setFilters } = useFilters();
   console.log('filters', filters);
-
   const [searchQuery, setSearchQuery] = useState('Java Script');
   const [startIndex, setStartIndex] = useState(0);
-  // const [author, setAuthor] = useState('');
-  // const [bookTitle, setBookTitle] = useState('');
-  // const [inpublisher, setInpublisher] = useState('');
   // const [lang, setLang] = useState(''); //! выбрать другой фильтр - языка нет в фильтрации(работает не корректно)
   const [allBooks, setAllBooks] = useState([]);
-
-  const clearFilters = useCallback(() => {
-    // setAuthor('');
-    // setBookTitle('');
-    // setInpublisher('');
-    // setLang('');
-    setFilters({ author: '', bookTitle: '', inpublisher: '', lang: '' });
-    setAllBooks([]);
-  }, []);
 
   const { data: { items = [], totalItems = 0 } = {} } = useGetBooksByFiltersQuery(
     {
@@ -53,16 +41,29 @@ const MainPage = () => {
     setSearchQuery(value);
     setStartIndex(0);
     clearFilters();
-    // setAllBooks([]);
   }, 700);
 
   const filterOptions = useMemo(() => filtersOptions(items || []), [items]);
+
+  const clearFilters = useCallback(() => {
+    setFilters({ author: '', bookTitle: '', inpublisher: '', lang: '' });
+    setAllBooks([]);
+  }, []);
 
   const handleSearch = useCallback(
     (value) => {
       debouncedFetchBooks(value);
     },
     [debouncedFetchBooks, setSearchQuery, setStartIndex],
+  );
+
+  const handleOnChange = useCallback(
+    (key) => (e) => {
+      const value = e.target.value;
+
+      setFilters((prev) => ({ ...prev, [key]: value }));
+    },
+    [],
   );
 
   useEffect(() => {
@@ -88,7 +89,8 @@ const MainPage = () => {
                 className={styles.filterContainer}
                 options={filterOptions.authors}
                 // onChange={setAuthor}
-                onChange={(value) => setFilters((prev) => ({ ...prev, author: value }))}
+                // onChange={(e) => setFilters((prev) => ({ ...prev, author: value }))}
+                onChange={handleOnChange('author')}
                 value={filters.author}
               />
               <Select
