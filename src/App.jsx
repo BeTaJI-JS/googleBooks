@@ -7,9 +7,13 @@ import { router } from './router';
 
 import './index.css';
 import store from './store';
+import { FilterProvider } from './context';
 
 createRoot(document.getElementById('root')).render(
-  <Provider store={store}>
-    <RouterProvider router={router} />
-  </Provider>,
+  <FilterProvider>
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
+    ,
+  </FilterProvider>,
 );

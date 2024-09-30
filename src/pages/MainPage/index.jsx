@@ -12,31 +12,36 @@ import useDebouncedCallback from 'hooks';
 import { filtersOptions } from 'helpers';
 
 import styles from './styles.module.scss';
+import { useFilters } from '../../context';
 
 const MainPage = () => {
+  const { filters, setFilters } = useFilters();
+  console.log('filters', filters);
+
   const [searchQuery, setSearchQuery] = useState('Java Script');
   const [startIndex, setStartIndex] = useState(0);
-  const [author, setAuthor] = useState('');
-  const [bookTitle, setBookTitle] = useState('');
-  const [inpublisher, setInpublisher] = useState('');
-  const [lang, setLang] = useState(''); //! выбрать другой фильтр - языка нет в фильтрации(работает не корректно)
+  // const [author, setAuthor] = useState('');
+  // const [bookTitle, setBookTitle] = useState('');
+  // const [inpublisher, setInpublisher] = useState('');
+  // const [lang, setLang] = useState(''); //! выбрать другой фильтр - языка нет в фильтрации(работает не корректно)
   const [allBooks, setAllBooks] = useState([]);
 
   const clearFilters = useCallback(() => {
-    setAuthor('');
-    setBookTitle('');
-    setInpublisher('');
-    setLang('');
+    // setAuthor('');
+    // setBookTitle('');
+    // setInpublisher('');
+    // setLang('');
+    setFilters({ author: '', bookTitle: '', inpublisher: '', lang: '' });
     setAllBooks([]);
   }, []);
 
   const { data: { items = [], totalItems = 0 } = {} } = useGetBooksByFiltersQuery(
     {
       query: searchQuery,
-      langRestrict: lang,
-      author,
-      title: bookTitle,
-      inpublisher,
+      langRestrict: filters.lang,
+      author: filters.author,
+      title: filters.bookTitle,
+      inpublisher: filters.inpublisher,
       page: startIndex,
     },
     {
@@ -48,7 +53,7 @@ const MainPage = () => {
     setSearchQuery(value);
     setStartIndex(0);
     clearFilters();
-    setAllBooks([]);
+    // setAllBooks([]);
   }, 700);
 
   const filterOptions = useMemo(() => filtersOptions(items || []), [items]);
@@ -82,25 +87,33 @@ const MainPage = () => {
                 name='Автор'
                 className={styles.filterContainer}
                 options={filterOptions.authors}
-                onChange={setAuthor}
+                // onChange={setAuthor}
+                onChange={(value) => setFilters((prev) => ({ ...prev, author: value }))}
+                value={filters.author}
               />
               <Select
                 name='Название'
                 className={styles.filterContainer}
                 options={filterOptions.titles}
-                onChange={setBookTitle}
+                // onChange={setBookTitle}
+                onChange={(value) => setFilters((prev) => ({ ...prev, bookTitle: value }))}
+                value={filters.bookTitle}
               />
               <Select
                 name='Издательство'
                 className={styles.filterContainer}
                 options={filterOptions.categories}
-                onChange={setInpublisher}
+                // onChange={setInpublisher}
+                onChange={(value) => setFilters((prev) => ({ ...prev, inpublisher: value }))}
+                value={filters.inpublisher}
               />
               <Select
                 name='Язык'
                 className={styles.filterContainer}
                 options={filterOptions.languages}
-                onChange={setLang}
+                onChange={(value) => setFilters((prev) => ({ ...prev, lang: value }))}
+                value={filters.lang}
+                // onChange={setLang}
               />
             </div>
           </div>

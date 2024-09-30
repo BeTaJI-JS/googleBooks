@@ -45,6 +45,8 @@
     flex-direction: column;
     gap: 30px;
     line-height: 26px;
+    max-height: 600px;
+    overflow-y: auto;
 
     & > :first-child {
       color: $gray2;
