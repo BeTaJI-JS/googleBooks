@@ -23,7 +23,7 @@ const MainPage = () => {
 
   const { data: { items = [], totalItems = 0 } = {} } = useGetBooksByFiltersQuery(
     {
-      query: searchQuery,
+      query: filters.query || searchQuery,
       langRestrict: filters.lang,
       author: filters.author,
       title: filters.bookTitle,
@@ -39,6 +39,7 @@ const MainPage = () => {
 
   const filterOptionsConfig = useMemo(
     () => [
+      { name: 'Поиск', key: 'query', options: searchQuery },
       { name: 'Автор', key: 'author', options: filterOptions.authors },
       { name: 'Название', key: 'bookTitle', options: filterOptions.titles },
       { name: 'Издательство', key: 'inpublisher', options: filterOptions.categories },
@@ -51,24 +52,54 @@ const MainPage = () => {
     setFilters({ author: '', bookTitle: '', inpublisher: '', lang: '' });
     setAllBooks([]);
   }, [setFilters, setAllBooks]);
+  // Функция для обновления URL с фильтрами
+  const updateUrlWithFilters = useCallback((filters) => {
+    // const preparedFilters = filters;
+
+    const params = new URLSearchParams(filters).toString();
+
+    const newUrl = `${window.location.pathname}?${params}`;
+
+    window.history.pushState({ path: newUrl }, '', newUrl);
+  }, []);
 
   const handleSearch = useCallback(
     (query) => {
       setSearchQuery(query);
       setStartIndex(0);
+      updateUrlWithFilters({ ...filters, query: query });
+
       clearFilters();
     },
-    [setSearchQuery, setStartIndex, clearFilters],
+    [filters, updateUrlWithFilters, clearFilters],
   );
 
   const handleOnChange = useCallback(
     (key) => (e) => {
       const value = e.target.value;
-
-      setFilters((prev) => ({ ...prev, [key]: value }));
+      setFilters((prev) => {
+        const newFilters = { ...prev, [key]: value, query: searchQuery };
+        updateUrlWithFilters(newFilters); // Обновляем URL с новыми фильтрами
+        return newFilters;
+      });
     },
-    [setFilters],
+    [setFilters, updateUrlWithFilters, searchQuery],
   );
+
+  // Функция для извлечения фильтров из URL при загрузке страницы
+  const getFiltersFromUrl = useCallback(() => {
+    const params = new URLSearchParams(window.location.search);
+
+    const newFilters = {};
+
+    filterOptionsConfig.forEach(({ key }) => {
+      if (params.has(key)) {
+        newFilters[key] = params.get(key);
+      }
+    });
+
+    return newFilters;
+  }, [searchQuery, filterOptionsConfig]);
 
   useEffect(() => {
     if (!items.length) return;
@@ -80,6 +111,14 @@ const MainPage = () => {
     }
   }, [items, startIndex]);
 
+  // Эффект для установки фильтров из URL при загрузке компонента
+  useEffect(() => {
+    const filtersFromUrl = getFiltersFromUrl();
+    console.log('filtersFromUrl', filtersFromUrl);
+
+    setFilters((prev) => ({ ...prev, ...filtersFromUrl }));
+  }, [setFilters]);
+
   return (
     <>
       <MainContent />
@@ -88,7 +127,7 @@ const MainPage = () => {
           <div className={styles.searchBar}>
             <SearchBar onSearch={handleSearch} />
             <div className={styles.filterOptionsContainer}>
-              {filterOptionsConfig.map(({ name, key, options }) => (
+              {filterOptionsConfig.slice(1).map(({ name, key, options }) => (
                 <Select
                   key={key}
                   name={name}

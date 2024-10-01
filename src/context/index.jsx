@@ -4,6 +4,7 @@ const FilterContext = createContext();
 
 export const FilterProvider = ({ children }) => {
   const [filters, setFilters] = useState({
+    // query: ''Java Script',
     author: '',
     bookTitle: '',
     inpublisher: '',
