@@ -43,6 +43,24 @@
   }
 }
 
+.similarsContainer {
+  position: relative; // Подсказки появятся прямо под строкой поиска
+  background-color: white; // Фон для подсказок
+  border: 1px solid #ccc; // Граница
+  z-index: 10; // Чтобы подсказки отображались поверх других элементов
+  width: 100%; // Чтобы подсказки занимали всю ширину строки поиска
+  max-height: 100px; // Максимальная высота для прокрутки
+  overflow-y: auto; // Добавляем прокрутку, если содержимое превышает максимальную высоту
+}
+
+.similarItem {
+  padding: 10px; // Отступы для элемента подсказки
+  cursor: pointer; // Указатель курсора
+  &:hover {
+    background-color: #f0f0f0; // Изменяем фон при наведении
+  }
+}
+
 @media screen and (max-width: 1200px) {
   .searchBarContainer {
     max-width: 1000px;

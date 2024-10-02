@@ -19,7 +19,13 @@ const MainPage = () => {
   const [searchQuery, setSearchQuery] = useState('Java Script');
   const [startIndex, setStartIndex] = useState(0);
   const [allBooks, setAllBooks] = useState([]);
+  const [searchHistory, setSearchHistory] = useState(['Java Script']);
+  const [showPopUp, setShowPopUp] = useState(false);
+  console.log('showPopUp', showPopUp);
+  console.log('searchQuery--->>>', searchQuery);
+
   // const [lang, setLang] = useState(''); //! выбрать другой фильтр - языка нет в фильтрации(работает не корректно)
+  console.log('searchHistory', searchHistory);
 
   const { data: { items = [], totalItems = 0 } = {} } = useGetBooksByFiltersQuery(
     {
@@ -65,13 +71,19 @@ const MainPage = () => {
 
   const handleSearch = useCallback(
     (query) => {
+      if (query && !searchHistory.includes(query)) {
+        setSearchHistory((prev) => [query, ...prev.slice(0, 9)]); // не более 10 запросов
+      }
+
       setSearchQuery(query);
       setStartIndex(0);
+      setFilters((prev) => ({ ...prev, query: query }));
+
       updateUrlWithFilters({ ...filters, query: query });
 
       clearFilters();
     },
-    [filters, updateUrlWithFilters, clearFilters],
+    [filters, updateUrlWithFilters, clearFilters, searchHistory],
   );
 
   const handleOnChange = useCallback(
@@ -101,6 +113,15 @@ const MainPage = () => {
     return newFilters;
   }, [searchQuery, filterOptionsConfig]);
 
+  const handleSuggestionClick = (similarValue) => {
+    console.log('similarValue', similarValue);
+
+    // setSearchQuery(similarValue);
+    // setFilters((prev) => ({ ...prev, query: similarValue }));
+    handleSearch(similarValue); // Выполнить поиск с выбранной подсказкой
+    setShowPopUp((prev) => !prev);
+  };
+
   useEffect(() => {
     if (!items.length) return;
 
@@ -117,7 +138,20 @@ const MainPage = () => {
     console.log('filtersFromUrl', filtersFromUrl);
 
     setFilters((prev) => ({ ...prev, ...filtersFromUrl }));
-  }, [setFilters]);
+    if (filtersFromUrl.query) {
+      setSearchQuery(filtersFromUrl.query);
+    }
+  }, [setFilters, setSearchQuery]);
+
+  //
+
+  const handleFocus = () => {
+    setShowPopUp((prev) => !prev);
+  };
+
+  // const handleBlur = () => {
+  //   setShowPopUp(false);
+  // };
 
   return (
     <>
@@ -125,7 +159,24 @@ const MainPage = () => {
       <div>
         <div className={styles.searchBarContainer}>
           <div className={styles.searchBar}>
-            <SearchBar onSearch={handleSearch} />
+            <SearchBar onSearch={handleSearch} onFocus={handleFocus} value={searchQuery} />
+            {showPopUp && searchQuery && (
+              <div className={styles.similarsContainer}>
+                {searchHistory.map((similarValue, index) => {
+                  if (similarValue.toLowerCase().startsWith(searchQuery.toLowerCase())) {
+                    return (
+                      <div
+                        key={index}
+                        className={styles.similarItem}
+                        onClick={() => handleSuggestionClick(similarValue)}
+                      >
+                        {similarValue}
+                      </div>
+                    );
+                  }
+                })}
+              </div>
+            )}
             <div className={styles.filterOptionsContainer}>
               {filterOptionsConfig.slice(1).map(({ name, key, options }) => (
                 <Select
