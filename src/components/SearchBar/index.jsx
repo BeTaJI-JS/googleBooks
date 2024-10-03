@@ -4,31 +4,28 @@ import useDebouncedCallback from 'hooks';
 
 import styles from './styles.module.scss';
 
-const SearchBar = ({ onSearch, onFocus, value }) => {
-  // const [searchQuery, setSearchQuery] = useState('Java Script');
+const SearchBar = ({ onSearch, searchHistory, filters }) => {
+  const [value, setValue] = useState(filters.query);
+  const [showPopUp, setShowPopUp] = useState(false);
 
-  const debouncedSearch = useDebouncedCallback((query) => {
-    onSearch(query);
-  }, 500);
+  const handleSuggestionClick = (similarValue) => {
+    console.log('similarValue', similarValue);
 
-  // const handleInputChange = useCallback(
-  //   (e) => {
-  //     const value = e.target.value;
-  //     // setSearchQuery(value);
-  //     debouncedSearch(value);
-  //   },
-  //   [debouncedSearch],
-  // );
-
-  const handleInputChange = (e) => {
-    const value = e.target.value;
-    // setSearchQuery(value);
-    debouncedSearch(value);
+    setValue(similarValue); // Выполнить поиск с выбранной подсказкой
+    setShowPopUp((prev) => !prev);
   };
 
-  // useEffect(() => {
-  //   debouncedSearch(value);
-  // }, [value, debouncedSearch]);
+  const onFocus = () => {
+    setShowPopUp((prev) => !prev);
+  };
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      onSearch(value);
+    }, 500);
+
+    return () => clearTimeout(handler);
+  }, [value]);
 
   return (
     <>
@@ -36,16 +33,16 @@ const SearchBar = ({ onSearch, onFocus, value }) => {
         className={styles.searchInput}
         type='text'
         value={value}
-        onChange={handleInputChange}
+        onChange={(e) => setValue(e.target.value)}
         placeholder='Поиск...'
         onFocus={onFocus}
         // onBlur={onBlur}
         // onBlur={onFocus}
       />
-      {/* {searchQuery && showPopUp && (
+      {showPopUp && (
         <div className={styles.similarsContainer}>
           {searchHistory.map((similarValue, index) => {
-            if (similarValue.toLowerCase().startsWith(searchQuery.toLowerCase())) {
+            if (similarValue.toLowerCase().startsWith(filters.query.toLowerCase())) {
               return (
                 <div key={index} className={styles.similarItem} onClick={() => handleSuggestionClick(similarValue)}>
                   {similarValue}
@@ -54,7 +51,7 @@ const SearchBar = ({ onSearch, onFocus, value }) => {
             }
           })}
         </div>
-      )} */}
+      )}
     </>
   );
 };

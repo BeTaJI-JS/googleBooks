@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import styles from './styles.module.scss';
 
 const Select = ({ name, options, className, onChange, value }) => {
