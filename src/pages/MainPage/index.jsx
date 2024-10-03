@@ -12,6 +12,7 @@ import { filtersOptions } from 'helpers';
 import { useFilters } from 'context';
 
 import styles from './styles.module.scss';
+import { useSearchParams } from 'react-router-dom';
 
 const MainPage = () => {
   const { filters, setFilters } = useFilters();
@@ -23,6 +24,8 @@ const MainPage = () => {
   const [showPopUp, setShowPopUp] = useState(false);
   console.log('showPopUp', showPopUp);
   console.log('searchQuery--->>>', searchQuery);
+
+  let [searchParams, setSearchParams] = useSearchParams({ ...filters, query: searchQuery });
 
   // const [lang, setLang] = useState(''); //! выбрать другой фильтр - языка нет в фильтрации(работает не корректно)
   console.log('searchHistory', searchHistory);
@@ -59,15 +62,22 @@ const MainPage = () => {
     setAllBooks([]);
   }, [setFilters, setAllBooks]);
   // Функция для обновления URL с фильтрами
-  const updateUrlWithFilters = useCallback((filters) => {
-    // const preparedFilters = filters;
+  // const updateUrlWithFilters = useCallback((filters) => {
+  //   // const preparedFilters = filters;
 
-    const params = new URLSearchParams(filters).toString();
+  //   const params = new URLSearchParams(filters).toString();
 
-    const newUrl = `${window.location.pathname}?${params}`;
+  //   const newUrl = `${window.location.pathname}?${params}`;
 
-    window.history.pushState({ path: newUrl }, '', newUrl);
-  }, []);
+  //   window.history.pushState({ path: newUrl }, '', newUrl);
+  // }, []);
+
+  const updateUrlWithFilters = useCallback(
+    (filters) => {
+      setSearchParams(filters);
+    },
+    [setSearchParams],
+  );
 
   const handleSearch = useCallback(
     (query) => {
@@ -99,19 +109,20 @@ const MainPage = () => {
   );
 
   // Функция для извлечения фильтров из URL при загрузке страницы
-  const getFiltersFromUrl = useCallback(() => {
-    const params = new URLSearchParams(window.location.search);
+  // const getFiltersFromUrl = useCallback(() => {
+  //   // const params = new URLSearchParams(window.location.search);
 
-    const newFilters = {};
+  //   const newFilters = {};
+  //   console.log('searchParams', searchParams);
 
-    filterOptionsConfig.forEach(({ key }) => {
-      if (params.has(key)) {
-        newFilters[key] = params.get(key);
-      }
-    });
+  //   filterOptionsConfig.forEach(({ key }) => {
+  //     if (searchParams.has(key)) {
+  //       newFilters[key] = searchParams.get(key);
+  //     }
+  //   });
 
-    return newFilters;
-  }, [searchQuery, filterOptionsConfig]);
+  //   return newFilters;
+  // }, [searchQuery, filterOptionsConfig]);
 
   const handleSuggestionClick = (similarValue) => {
     console.log('similarValue', similarValue);
@@ -133,17 +144,36 @@ const MainPage = () => {
   }, [items, startIndex]);
 
   // Эффект для установки фильтров из URL при загрузке компонента
+  // useEffect(() => {
+  //   const filtersFromUrl = getFiltersFromUrl();
+  //   console.log('filtersFromUrl', filtersFromUrl);
+
+  //   setFilters((prev) => ({ ...prev, ...filtersFromUrl }));
+  //   if (filtersFromUrl.query) {
+  //     setSearchQuery(filtersFromUrl.query);
+  //   }
+  // }, [setFilters, setSearchQuery]);
+
+  //!
+
+  // Функция для обновления URL с фильтрами
+
+  // Функция для извлечения фильтров из URL
+  const getFiltersFromUrl = useCallback(() => {
+    const urlFilters = {};
+    filterOptionsConfig.forEach(({ key }) => {
+      if (searchParams.has(key)) {
+        urlFilters[key] = searchParams.get(key);
+      }
+    });
+    return urlFilters;
+  }, [filterOptionsConfig, searchParams]);
+  // Извлекаем фильтры из URL при загрузке страницы
   useEffect(() => {
-    const filtersFromUrl = getFiltersFromUrl();
-    console.log('filtersFromUrl', filtersFromUrl);
-
-    setFilters((prev) => ({ ...prev, ...filtersFromUrl }));
-    if (filtersFromUrl.query) {
-      setSearchQuery(filtersFromUrl.query);
-    }
-  }, [setFilters, setSearchQuery]);
-
-  //
+    const urlFilters = getFiltersFromUrl();
+    setFilters(urlFilters);
+    setSearchQuery(urlFilters.query || '');
+  }, [setFilters]);
 
   const handleFocus = () => {
     setShowPopUp((prev) => !prev);
