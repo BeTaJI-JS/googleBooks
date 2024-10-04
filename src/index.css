@@ -1,6 +1,7 @@
 :root {
   display: flex;
   flex-direction: column;
+  
   /* max-width: 1920px;   */
   /* Отключить для адаптива в обе стороны */
   
@@ -16,33 +17,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-@media screen and (max-width: 1920px) {
-  :root {
-    max-width: 100%;
-  }
-}
-
-@media screen and (max-width: 1024px) {
-  :root {
-    max-width: 100%;
-  }
-  
-}
-
-
-@media screen and (max-width: 768px) {
-  :root {
-    max-width: 100%;
-  }
-  
-}
-
-@media screen and (max-width: 480px) {
-  :root {
-    max-width: 100%;
-  }
-  
-}
 h3{
   margin: 0;
 }
