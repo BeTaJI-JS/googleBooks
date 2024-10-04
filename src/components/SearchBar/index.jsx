@@ -1,6 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
-
-import useDebouncedCallback from 'hooks';
+import { useState, useEffect, useRef } from 'react';
 
 import styles from './styles.module.scss';
 
@@ -8,10 +6,12 @@ const SearchBar = ({ onSearch, searchHistory, filters }) => {
   const [value, setValue] = useState(filters.query);
   const [showPopUp, setShowPopUp] = useState(false);
 
+  const popUpRef = useRef(null);
+
   const handleSuggestionClick = (similarValue) => {
     console.log('similarValue', similarValue);
 
-    setValue(similarValue); // Выполнить поиск с выбранной подсказкой
+    setValue(similarValue); // Выполнять поиск с подсказкой
     setShowPopUp((prev) => !prev);
   };
 
@@ -19,12 +19,23 @@ const SearchBar = ({ onSearch, searchHistory, filters }) => {
     setShowPopUp((prev) => !prev);
   };
 
+  const handleClickOutside = (event) => {
+    if (popUpRef.current && !popUpRef.current.contains(event.target)) {
+      setShowPopUp(false); // Скрываю попап, если клик не в нем
+    }
+  };
+
   useEffect(() => {
     const handler = setTimeout(() => {
       onSearch(value);
     }, 500);
 
-    return () => clearTimeout(handler);
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      clearTimeout(handler);
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, [value]);
 
   return (
@@ -36,13 +47,11 @@ const SearchBar = ({ onSearch, searchHistory, filters }) => {
         onChange={(e) => setValue(e.target.value)}
         placeholder='Поиск...'
         onFocus={onFocus}
-        // onBlur={onBlur}
-        // onBlur={onFocus}
       />
       {showPopUp && (
-        <div className={styles.similarsContainer}>
+        <div className={styles.similarsContainer} ref={popUpRef}>
           {searchHistory.map((similarValue, index) => {
-            if (similarValue.toLowerCase().startsWith(filters.query.toLowerCase())) {
+            if (similarValue.toLowerCase().includes(filters.query.toLowerCase())) {
               return (
                 <div key={index} className={styles.similarItem} onClick={() => handleSuggestionClick(similarValue)}>
                   {similarValue}
