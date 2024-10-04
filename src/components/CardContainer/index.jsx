@@ -19,7 +19,10 @@ const CardContainer = ({ books, setPage, totalItems }) => {
 
   return (
     <div className={styles.wrapper}>
-      <div>Найдено: {totalItems} результатов</div>
+      <div>
+        <span>Найдено: </span>
+        {totalItems} результатов
+      </div>
       {books.length > 0 && (
         <VirtualList className={styles.virtualList} data={books} height={height} itemHeight={itemHeight} itemKey='etag'>
           {(book) => <BookCard book={book} />}
