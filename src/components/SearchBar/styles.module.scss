@@ -10,6 +10,14 @@
   font-size: 16px;
 }
 
+.searchIcon {
+  position: absolute;
+  right: 40px;
+  border: none;
+  padding: 12px 0;
+  background: none;
+}
+
 .similarsContainer {
   position: absolute;
   max-width: 1144px;
@@ -52,5 +60,9 @@
   .similarsContainer {
     max-width: 450px;
     top: 80px;
+  }
+
+  .searchIcon {
+    right: 25px;
   }
 }

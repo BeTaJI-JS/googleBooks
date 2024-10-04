@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 
+import SearchIcon from 'assets/search.svg';
+
 import styles from './styles.module.scss';
 
 const SearchBar = ({ onSearch, searchHistory, filters }) => {
@@ -48,6 +50,9 @@ const SearchBar = ({ onSearch, searchHistory, filters }) => {
         placeholder='Поиск...'
         onFocus={onFocus}
       />
+      <button className={styles.searchIcon}>
+        <img src={SearchIcon} alt='search' />
+      </button>
       {showPopUp && (
         <div className={styles.similarsContainer} ref={popUpRef}>
           {searchHistory.map((similarValue, index) => {
