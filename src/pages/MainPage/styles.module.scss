@@ -28,10 +28,13 @@
     .filterContainer {
       box-sizing: border-box;
       display: flex;
-      justify-content: space-between;
+      // justify-content: space-between;
       width: 557px;
       min-height: 54px;
-      padding: 7px 10px 7px 16px;
+      // padding: 7px 10px 7px 16px;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 7px 0px 7px 16px;
 
       @media screen and (max-width: 768px) {
         select {
@@ -42,24 +45,6 @@
     }
   }
 }
-
-// .similarsContainer {
-//   position: relative; // Подсказки появятся прямо под строкой поиска
-//   background-color: white; // Фон для подсказок
-//   border: 1px solid #ccc; // Граница
-//   z-index: 10; // Чтобы подсказки отображались поверх других элементов
-//   width: 100%; // Чтобы подсказки занимали всю ширину строки поиска
-//   max-height: 100px; // Максимальная высота для прокрутки
-//   overflow-y: auto; // Добавляем прокрутку, если содержимое превышает максимальную высоту
-// }
-
-// .similarItem {
-//   padding: 10px; // Отступы для элемента подсказки
-//   cursor: pointer; // Указатель курсора
-//   &:hover {
-//     background-color: #f0f0f0; // Изменяем фон при наведении
-//   }
-// }
 
 @media screen and (max-width: 1200px) {
   .searchBarContainer {

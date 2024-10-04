@@ -11,19 +11,46 @@
 }
 
 .similarsContainer {
-  position: relative; // Подсказки появятся прямо под строкой поиска
+  position: absolute;
+  max-width: 1144px;
+  // max-width: 90%;
+  top: 100px;
+
+  // position: relative; // Подсказки появятся прямо под строкой поиска
   background-color: white; // Фон для подсказок
   border: 1px solid #ccc; // Граница
   z-index: 10; // Чтобы подсказки отображались поверх других элементов
   width: 100%; // Чтобы подсказки занимали всю ширину строки поиска
+  width: calc(100% - 26px); // Учитываем отступы
   max-height: 100px; // Максимальная высота для прокрутки
   overflow-y: auto; // Добавляем прокрутку, если содержимое превышает максимальную высоту
 }
 
 .similarItem {
-  padding: 10px; // Отступы для элемента подсказки
+  // padding: 10px; // Отступы для элемента подсказки
+  padding: 1em;
   cursor: pointer; // Указатель курсора
   &:hover {
     background-color: #f0f0f0; // Изменяем фон при наведении
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .similarsContainer {
+    max-width: 944px;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .similarsContainer {
+    max-width: 560px;
+    top: 90px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .similarsContainer {
+    max-width: 450px;
+    top: 80px;
   }
 }
