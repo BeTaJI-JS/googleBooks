@@ -26,9 +26,9 @@ const DetailPage = () => {
             <div className={styles.cardContent}>
               <div>
                 <div>{data?.volumeInfo?.authors?.join(', ')}</div>
-                <h3>{data?.volumeInfo?.title}</h3>
+                <h3>{data?.volumeInfo?.title || 'Название отсутствует'}</h3>
               </div>
-              <div>{data?.volumeInfo?.description}</div>
+              <div>{data?.volumeInfo?.description || 'Описание отсутствует'}</div>
             </div>
           </div>
         )}

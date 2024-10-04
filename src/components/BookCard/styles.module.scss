@@ -40,7 +40,7 @@
   padding: 15px 18px 15px 18px;
   line-height: 26px;
 
-  &:first-child {
+  & > :first-child {
     font-size: 12px;
   }
 
