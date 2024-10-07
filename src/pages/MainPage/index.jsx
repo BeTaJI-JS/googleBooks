@@ -22,9 +22,6 @@ const MainPage = () => {
   const [searchHistory, setSearchHistory] = useState(['Java Script']);
 
   const [searchParams, setSearchParams] = useSearchParams({ ...filters });
-  console.log('searchParams', searchParams);
-
-  console.log('filters', filters);
 
   const { data: { items = [], totalItems = 0 } = {} } = useGetBooksByFiltersQuery(
     {
@@ -60,15 +57,7 @@ const MainPage = () => {
       }
       setStartIndex(0);
 
-      const filters = {
-        query: query,
-        author: '',
-        bookTitle: '',
-        inpublisher: '',
-        lang: '',
-      };
-      // setFilters({ ...filters, query });
-      setFilters(filters);
+      setFilters((prevFilters) => ({ ...prevFilters, query }));
     },
     [searchHistory],
   );
@@ -86,8 +75,9 @@ const MainPage = () => {
     if (!filters) {
       return;
     }
-    setSearchParams({ ...filters });
+    setSearchParams(filters);
   }, [filters]);
+
   useEffect(() => {
     if (!items.length) return;
 
@@ -100,11 +90,10 @@ const MainPage = () => {
 
   useEffect(() => {
     const urlFilters = {};
+
     let exists = false;
     filterOptionsConfig.forEach(({ key }) => {
       if (searchParams.has(key)) {
-        console.log('urlFilters[key]', urlFilters[key]);
-
         urlFilters[key] = searchParams.get(key);
         if (urlFilters[key]) {
           exists = true;
@@ -112,9 +101,10 @@ const MainPage = () => {
       }
     });
 
+    console.log('urlFilters', urlFilters);
+
     if (exists) {
       setFilters(urlFilters);
-      console.log('filters useEffect--->>>>.', filters);
     } else {
       setFilters({ query: 'Java Script', author: '', bookTitle: '', inpublisher: '', lang: '' });
     }
