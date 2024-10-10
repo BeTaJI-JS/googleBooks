@@ -15,11 +15,11 @@ import { useFilters } from 'context';
 import styles from './styles.module.scss';
 
 const MainPage = () => {
-  const { filters, setFilters } = useFilters();
-
   const [startIndex, setStartIndex] = useState(0);
   const [allBooks, setAllBooks] = useState([]);
   const [searchHistory, setSearchHistory] = useState(['Java Script']);
+  
+  const { filters, setFilters } = useFilters();
 
   const [searchParams, setSearchParams] = useSearchParams({ ...filters });
 
@@ -101,8 +101,6 @@ const MainPage = () => {
       }
     });
 
-    console.log('urlFilters', urlFilters);
-
     if (exists) {
       setFilters(urlFilters);
     } else {
@@ -111,7 +109,7 @@ const MainPage = () => {
   }, []);
 
   if (!filters) {
-    return 'loading';
+    return 'Загрузка данных...';
   }
 
   return (

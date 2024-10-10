@@ -1,13 +1,14 @@
-import { createRoot } from 'react-dom/client';
-
 import { Provider } from 'react-redux';
+import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
 
 import { router } from './router';
 
-import './index.css';
 import store from './store';
+
 import { FilterProvider } from './context';
+
+import './styles/global.module.scss';
 
 createRoot(document.getElementById('root')).render(
   <FilterProvider>
@@ -16,3 +17,4 @@ createRoot(document.getElementById('root')).render(
     </Provider>
   </FilterProvider>,
 );
+
