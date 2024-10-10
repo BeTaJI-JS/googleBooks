@@ -1,7 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 
-import SearchIcon from 'assets/search.svg';
-
 import styles from './styles.module.scss';
 
 const SearchBar = ({ onSearch, searchHistory, filters }) => {
@@ -10,12 +8,10 @@ const SearchBar = ({ onSearch, searchHistory, filters }) => {
 
   const popUpRef = useRef(null);
 
-  const handleSuggestionClick = (similarValue) => {
-    console.log('similarValue', similarValue);
-
+  const handleSuggestionClick = useCallback((similarValue) => {
     setValue(similarValue); 
     setShowPopUp((prev) => !prev);
-  };
+  },[setShowPopUp, setValue]);
 
   const onFocus = useCallback(() => {
     setShowPopUp((prev) => !prev);
@@ -51,7 +47,7 @@ const SearchBar = ({ onSearch, searchHistory, filters }) => {
         onFocus={onFocus}
       />
       <button className={styles.searchIcon}>
-        <img src={SearchIcon} alt='search' />
+        <img src={'/search.svg'} alt='search' />
       </button>
       {showPopUp && (
         <div className={styles.similarsContainer} ref={popUpRef}>

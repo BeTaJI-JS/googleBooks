@@ -1,7 +1,6 @@
 import cn from 'classnames';
 import { useMemo } from 'react';
 
-import Arrow from 'assets/arrow.svg';
 import styles from './styles.module.scss';
 
 const Select = ({ name, options, className, onChange, value }) => {
@@ -18,7 +17,7 @@ const Select = ({ name, options, className, onChange, value }) => {
         ))}
       </select>
       <button className={styles.selectIcon}>
-        <img alt='arrow' src={Arrow} />
+        <img alt='arrow' src={'/arrow.svg'} />
       </button>
     </div>
   );

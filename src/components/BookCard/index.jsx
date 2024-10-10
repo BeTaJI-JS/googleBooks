@@ -2,8 +2,6 @@ import  { forwardRef } from 'react';
 
 import { Link } from 'react-router-dom';
 
-import EmptyImage from 'assets/empty.svg';
-
 import styles from './styles.module.scss';
 
 const BookCard = forwardRef(function BookCardBody({ book }, ref) {
@@ -13,7 +11,7 @@ const BookCard = forwardRef(function BookCardBody({ book }, ref) {
     <Link to={`/book/${book.id}`} key={book.id}>
       <div className={styles.card}>
         <div>
-          <img src={imageLinks?.thumbnail || EmptyImage} alt={title} />
+          <img src={imageLinks?.thumbnail || '/empty.svg'} alt={title} />
         </div>
         <div className={styles.contentInfo}>
           <div>{authors?.join(', ') || 'Автор неизвестен'}</div>
