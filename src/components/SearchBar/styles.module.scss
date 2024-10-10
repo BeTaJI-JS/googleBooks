@@ -22,21 +22,23 @@
   position: absolute;
   max-width: 1144px;
   top: 100px;
-  background-color: white; // Фон для подсказок
-  border: 1px solid #ccc; // Граница
-  z-index: 10; // Чтобы подсказки отображались поверх других элементов
-  width: 100%; // Чтобы подсказки занимали всю ширину строки поиска
-  width: calc(100% - 26px); // Учитываем отступы
-  max-height: 100px; // Максимальная высота для прокрутки
-  overflow-y: auto; // Добавляем прокрутку, если содержимое превышает максимальную высоту
+  background-color: $white; 
+  border: 1px solid $white3; 
+  z-index: 10; 
+  width: 100%; 
+  width: calc(100% - 26px); 
+  max-height: 100px; 
+  overflow-y: auto; 
+  scrollbar-color: $green $white;
 }
 
 .similarItem {
-  // padding: 10px; // Отступы для элемента подсказки
   padding: 1em;
-  cursor: pointer; // Указатель курсора
+  cursor: pointer; 
+
   &:hover {
-    background-color: #f0f0f0; // Изменяем фон при наведении
+    background-color: $white2;
+
   }
 }
 

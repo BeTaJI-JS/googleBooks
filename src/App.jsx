@@ -8,6 +8,7 @@ import store from './store';
 
 import { FilterProvider } from './context';
 
+import 'normalize.css';
 import './styles/global.module.scss';
 
 createRoot(document.getElementById('root')).render(

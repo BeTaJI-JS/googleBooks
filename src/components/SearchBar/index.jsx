@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
 import SearchIcon from 'assets/search.svg';
 
@@ -13,19 +13,19 @@ const SearchBar = ({ onSearch, searchHistory, filters }) => {
   const handleSuggestionClick = (similarValue) => {
     console.log('similarValue', similarValue);
 
-    setValue(similarValue); // Выполнять поиск с подсказкой
+    setValue(similarValue); 
     setShowPopUp((prev) => !prev);
   };
 
-  const onFocus = () => {
+  const onFocus = useCallback(() => {
     setShowPopUp((prev) => !prev);
-  };
+  }, [setShowPopUp]);
 
-  const handleClickOutside = (event) => {
+  const handleClickOutside = useCallback((event) => {
     if (popUpRef.current && !popUpRef.current.contains(event.target)) {
-      setShowPopUp(false); // Скрываю попап, если клик не в нем
+      setShowPopUp(false); 
     }
-  };
+  },[setShowPopUp]);
 
   useEffect(() => {
     const handler = setTimeout(() => {
