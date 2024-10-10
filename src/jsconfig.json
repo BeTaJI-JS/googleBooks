@@ -18,7 +18,7 @@
       "*": ["./src/*"],
       "assets/*": ["./src/assets/*"],
       "components/*": ["./src/components/*"],
-      "context/*": [".src/context/*"],
+      "context/*": ["./src/context/*"],
       "helpers/*": ["./src/helpers/*"],
       "hooks/*": ["./src/hooks/*"],
       "pages/*": ["./src/pages/*"],

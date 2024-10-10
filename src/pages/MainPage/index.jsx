@@ -53,7 +53,7 @@ const MainPage = () => {
   const handleSearch = useCallback(
     (query) => {
       if (query && !searchHistory.includes(query)) {
-        setSearchHistory((prev) => [query, ...prev.slice(0, 9)]); // не более 10 запросов
+        setSearchHistory((prev) => [query, ...prev.slice(0, 9)]);
       }
       setStartIndex(0);
 
