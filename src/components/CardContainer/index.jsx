@@ -20,6 +20,21 @@ const CardContainer = ({ books, setPage, totalItems }) => {
   if (books.length === 0)
     return <div className={cn(styles.wrapper, styles.centerText)}>Нет данных для отображения</div>;
 
+  const groups = []
+
+const count = 4;
+  for (let i = 0; i < books.length; i += count) {
+    //     console.log(books[i].volumeInfo
+    // .title, books[i+1].volumeInfo
+    // .title, books[i+2].volumeInfo
+    // .title, books[i+3].volumeInfo
+    // .title);
+    groups.push({
+      id: i,
+      books: books.slice(i, i + count),
+    });
+  }
+
   return (
     <div className={styles.wrapper}>
       <div>
@@ -29,13 +44,13 @@ const CardContainer = ({ books, setPage, totalItems }) => {
       {books.length > 0 && (
         <VirtualList
           className={styles.virtualList}
-          data={books}
-          // height={480 * booksLength}
-          height={3000}
+          data={groups}
+          height={980}
           itemHeight={itemHeight}
-          itemKey='etag'
+          itemKey='id'
         >
-          {(book) => <BookCard book={book} />}
+          {/* {(book) => <BookCard book={book} />} */}
+          {(group) => <>{group.books.map((book) => <BookCard book={book} key={book.etag}/>)}</>}
         </VirtualList>
       )}
       <button onClick={handleClickBtn} disabled={totalItems < 40}>
