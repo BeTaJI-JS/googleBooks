@@ -1,39 +1,65 @@
-import cn from 'classnames';
+import { useCallback, useEffect,  useState } from 'react';
 
-import BookCard from 'components/BookCard';
+import cn from 'classnames';
 
 import VirtualList from 'rc-virtual-list';
 
+import BookCard from 'components/BookCard';
+
 import styles from './styles.module.scss';
-// import { useMemo } from 'react';
 
 const height = 980;
 const itemHeight = 480;
 
 const CardContainer = ({ books, setPage, totalItems }) => {
+  const [viewCardCol, setViewCardCol] = useState(4);
 
-  // const booksLength = useMemo(() => books.length, [books]);
-  const handleClickBtn = () => {
+    const updateViewCardCol = useCallback(() => {
+    const width = window.innerWidth;
+    switch(width){
+      case 768:
+        setViewCardCol(1);
+        break;
+      case 1024:
+        setViewCardCol(2);
+        break;
+      case 1200:
+        setViewCardCol(3);
+        break;
+      default:
+        setViewCardCol(4);
+        break;
+    }
+  },[]);
+
+  const handleClickBtn = useCallback(() => {
     setPage((prev) => prev + 1);
-  };
+  },[setPage]);
 
-  if (books.length === 0)
-    return <div className={cn(styles.wrapper, styles.centerText)}>Нет данных для отображения</div>;
+
 
   const groups = []
-
-const count = 4;
-  for (let i = 0; i < books.length; i += count) {
-    //     console.log(books[i].volumeInfo
-    // .title, books[i+1].volumeInfo
-    // .title, books[i+2].volumeInfo
-    // .title, books[i+3].volumeInfo
-    // .title);
+  for (let i = 0; i < books.length; i += viewCardCol) {
+ 
     groups.push({
       id: i,
-      books: books.slice(i, i + count),
+      books: books.slice(i, i + viewCardCol),
     });
   }
+
+    useEffect(() => {
+    updateViewCardCol();
+
+    window.addEventListener('resize', updateViewCardCol); 
+    return () => {
+      window.removeEventListener('resize', updateViewCardCol);
+    };
+  }, []);
+
+
+    if (books.length === 0) {
+      return <div className={cn(styles.wrapper, styles.centerText)}>Нет данных для отображения</div>;
+    }
 
   return (
     <div className={styles.wrapper}>
@@ -45,11 +71,10 @@ const count = 4;
         <VirtualList
           className={styles.virtualList}
           data={groups}
-          height={980}
+          height={height}
           itemHeight={itemHeight}
           itemKey='id'
         >
-          {/* {(book) => <BookCard book={book} />} */}
           {(group) => <>{group.books.map((book) => <BookCard book={book} key={book.etag}/>)}</>}
         </VirtualList>
       )}
