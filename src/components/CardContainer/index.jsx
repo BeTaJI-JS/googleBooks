@@ -46,6 +46,7 @@ const CardContainer = ({ books, setPage, totalItems }) => {
       books: books.slice(i, i + viewCardCol),
     });
   }
+console.log('groups',groups);
 
     useEffect(() => {
     updateViewCardCol();
@@ -71,14 +72,13 @@ const CardContainer = ({ books, setPage, totalItems }) => {
         <VirtualList
           className={styles.virtualList}
           data={groups}
-          height={height}
+          height={groups.length > 1 ? height: height / 2}
           itemHeight={itemHeight}
           itemKey='id'
         >
           {(group) => <>{group.books.map((book) => <BookCard book={book} key={book.etag}/>)}</>}
         </VirtualList>
-      )}
-      <button onClick={handleClickBtn} disabled={totalItems < 40}>
+      )}      <button onClick={handleClickBtn} disabled={totalItems < 40}>
         Показать еще
       </button>
     </div>
