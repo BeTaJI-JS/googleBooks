@@ -46,7 +46,6 @@ const CardContainer = ({ books, setPage, totalItems }) => {
       books: books.slice(i, i + viewCardCol),
     });
   }
-console.log('groups',groups);
 
     useEffect(() => {
     updateViewCardCol();
