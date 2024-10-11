@@ -22,23 +22,32 @@
   position: absolute;
   max-width: 1144px;
   top: 100px;
-  background-color: $white; 
-  border: 1px solid $white3; 
-  z-index: 10; 
-  width: 100%; 
-  width: calc(100% - 26px); 
-  max-height: 100px; 
-  overflow-y: auto; 
+  background-color: $white;
+  border: 1px solid $white3;
+  z-index: 10;
+  width: 100%;
+  width: calc(100% - 26px);
+  max-height: 100px;
+  overflow-y: auto;
   scrollbar-color: $green $white;
+}
+
+.similarTitle {
+  padding: 5px 0px 0px 16px;
+  text-decoration: underline;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration-color: $green;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
 }
 
 .similarItem {
   padding: 1em;
-  cursor: pointer; 
+  cursor: pointer;
 
   &:hover {
     background-color: $white2;
-
   }
 }
 

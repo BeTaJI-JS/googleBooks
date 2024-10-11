@@ -51,6 +51,7 @@ const SearchBar = ({ onSearch, searchHistory, filters }) => {
       </button>
       {showPopUp && (
         <div className={styles.similarsContainer} ref={popUpRef}>
+          <div className={styles.similarTitle}>вы искали похожее:</div>
           {searchHistory.map((similarValue, index) => {
             if (similarValue.toLowerCase().includes(filters.query.toLowerCase())) {
               return (
