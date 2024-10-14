@@ -4,7 +4,6 @@ import { useSearchParams } from 'react-router-dom';
 import { useGetBooksByFiltersQuery } from 'store/requests';
 
 import CardContainer from 'components/CardContainer';
-import MainContent from 'components/MainContent';
 import SearchBar from 'components/SearchBar';
 import Select from 'components/Select';
 
@@ -114,7 +113,6 @@ const MainPage = () => {
 
   return (
     <>
-      <MainContent />
       <div>
         <div className={styles.searchBarContainer}>
           <div className={styles.searchBar}>

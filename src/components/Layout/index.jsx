@@ -1,6 +1,7 @@
-import styles from './styles.module.scss';
+import { Outlet } from 'react-router-dom';
 
-const MainContent = () => {
+import styles from './styles.module.scss';
+const MainLayout = () => {
   return (
     <>
       <div className={styles.title}>
@@ -23,8 +24,9 @@ const MainContent = () => {
           </div>
         </div>
       </div>
+      <Outlet />
     </>
   );
 };
 
-export default MainContent;
+export default MainLayout;

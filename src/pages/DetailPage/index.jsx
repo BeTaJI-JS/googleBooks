@@ -2,9 +2,6 @@ import { useParams } from 'react-router-dom';
 
 import { useGetBookQuery } from 'store/requests';
 
-import MainContent from 'components/MainContent';
-
-
 import styles from './styles.module.scss';
 const DetailPage = () => {
   const { id } = useParams();
@@ -13,7 +10,6 @@ const DetailPage = () => {
 
   return (
     <>
-      <MainContent />
       <div className={styles.CardInfoContainer}>
         {data && (
           <div className={styles.CardInfo}>
