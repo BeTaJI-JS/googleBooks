@@ -1,24 +1,29 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 
 import { useGetBooksByFiltersQuery } from 'store/requests';
+import { setHistory } from 'store/historySearch';
 
 import CardContainer from 'components/CardContainer';
 import SearchBar from 'components/SearchBar';
 import Select from 'components/Select';
 
-import { filtersOptions } from 'helpers';
+import FilterContext from 'context';
 
-import { useFilters } from 'context';
+import { filtersOptions } from 'helpers';
 
 import styles from './styles.module.scss';
 
 const MainPage = () => {
   const [startIndex, setStartIndex] = useState(0);
   const [allBooks, setAllBooks] = useState([]);
-  const [searchHistory, setSearchHistory] = useState(['Java Script']);
+
+  const dispatch = useDispatch();
   
-  const { filters, setFilters } = useFilters();
+  const searchHistory = useSelector((state) => state.historySearch);
+  
+  const { filters, setFilters } = useContext(FilterContext);
 
   const [searchParams, setSearchParams] = useSearchParams({ ...filters });
 
@@ -51,15 +56,14 @@ const MainPage = () => {
 
   const handleSearch = useCallback(
     (query) => {
-      if (query && !searchHistory.includes(query)) {
-        setSearchHistory((prev) => [query, ...prev.slice(0, 9)]);
-      }
-      setStartIndex(0);
-
-      setFilters((prevFilters) => ({ ...prevFilters, query }));
+        if (query && !searchHistory.includes(query)) {
+            dispatch(setHistory(query));
+        }
+        setStartIndex(0);
+        setFilters((prevFilters) => ({ ...prevFilters, query }));
     },
-    [searchHistory],
-  );
+    [searchHistory]
+);
 
   const handleOnChange = useCallback(
     (key) => (e) => {

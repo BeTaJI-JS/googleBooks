@@ -1,4 +1,4 @@
-import  { createContext, useContext, useState } from 'react';
+import  { createContext, useState } from 'react';
 
 const FilterContext = createContext();
 
@@ -8,4 +8,4 @@ export const FilterProvider = ({ children }) => {
   return <FilterContext.Provider value={{ filters, setFilters }}>{children}</FilterContext.Provider>;
 };
 
-export const useFilters = () => useContext(FilterContext);
+export default FilterContext;
