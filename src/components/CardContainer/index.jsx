@@ -1,4 +1,4 @@
-import { useCallback, useEffect,  useState } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import cn from 'classnames';
 
@@ -10,52 +10,27 @@ import styles from './styles.module.scss';
 
 const height = 980;
 const itemHeight = 480;
+const viewCardCol = 4;
 
 const CardContainer = ({ books, setPage, totalItems }) => {
-  const [viewCardCol, setViewCardCol] = useState(4);
 
-    const updateViewCardCol = useCallback(() => {
-    const width = window.innerWidth;
-    switch(width){
-      case 768:
-        setViewCardCol(1);
-        break;
-      case 1024:
-        setViewCardCol(2);
-        break;
-      case 1200:
-        setViewCardCol(3);
-        break;
-      default:
-        setViewCardCol(4);
-        break;
+    const groups = useMemo(() => {
+    const groupsItems = [];
+
+    for (let i = 0; i < books.length; i += viewCardCol) {
+   
+      groupsItems.push({
+        id: i,
+        books: books.slice(i, i + viewCardCol),
+      });
     }
-  },[]);
+
+    return groupsItems;
+  },[books])
 
   const handleClickBtn = useCallback(() => {
     setPage((prev) => prev + 1);
   },[setPage]);
-
-
-
-  const groups = []
-  for (let i = 0; i < books.length; i += viewCardCol) {
- 
-    groups.push({
-      id: i,
-      books: books.slice(i, i + viewCardCol),
-    });
-  }
-
-    useEffect(() => {
-    updateViewCardCol();
-
-    window.addEventListener('resize', updateViewCardCol); 
-    return () => {
-      window.removeEventListener('resize', updateViewCardCol);
-    };
-  }, []);
-
 
     if (books.length === 0) {
       return <div className={cn(styles.wrapper, styles.centerText)}>Нет данных для отображения</div>;
@@ -77,7 +52,8 @@ const CardContainer = ({ books, setPage, totalItems }) => {
         >
           {(group) => <>{group.books.map((book) => <BookCard book={book} key={book.etag}/>)}</>}
         </VirtualList>
-      )}      <button onClick={handleClickBtn} disabled={totalItems < 40}>
+      )}     
+       <button onClick={handleClickBtn} disabled={totalItems < 40}>
         Показать еще
       </button>
     </div>

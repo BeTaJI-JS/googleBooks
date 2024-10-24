@@ -56,8 +56,8 @@
   width: 100%;
 
   div[class~="rc-virtual-list-holder-inner"] {
-    flex-direction: row !important;
-    flex-wrap: wrap;
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)) !important;
     gap: 10px;
   }
 
